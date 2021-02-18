@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './RandomChar.css';
+import { Button } from 'reactstrap';
 import gotService from '../../services/gotService';
 import Preloader from '../common/Preloader';
 import ErrorMessage from '../common/ErrorMessage';
@@ -28,13 +29,13 @@ export default class RandomChar extends Component {
         });
     };
 
-    updateChar() {
+    updateChar = () => {
         const id = Math.floor(Math.random() * 150 + 1);
         this.gotService
             .getCharacter(id)
             .then(this.onCharLoaded)
             .catch(this.onError);
-    }
+    };
 
     render() {
         const { char, loading, error } = this.state;
@@ -48,6 +49,7 @@ export default class RandomChar extends Component {
                 {errorMessage}
                 {preloader}
                 {content}
+                <Button onClick={this.updateChar}>Peek Random Character</Button>
             </div>
         );
     }
