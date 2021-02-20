@@ -1,7 +1,3 @@
-.item-list {
-    max-width: 445px;
-}
-
 .item-list .list-group-item {
     cursor: pointer;
 }
