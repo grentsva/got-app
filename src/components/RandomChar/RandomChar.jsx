@@ -6,17 +6,16 @@ import Preloader from '../common/Preloader';
 import ErrorMessage from '../common/ErrorMessage';
 
 export default class RandomChar extends Component {
-    constructor(props) {
-        super(props);
-        this.updateChar();
-    }
-
     gotService = new gotService();
     state = {
         char: {},
         loading: true,
         error: false
     };
+
+    componentDidMount() {
+        this.updateChar();
+    }
 
     onCharLoaded = (char) => {
         this.setState({ char, loading: false });
