@@ -1,47 +1,39 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ItemList.css';
 import Preloader from '../common/Preloader';
 
-export default class ItemList extends Component {
-    state = {
-        itemList: null
-    };
+const ItemList = ({ getData, onItemSelected, renderItem }) => {
+    const [itemList, updateList] = useState([]);
 
-    componentDidMount() {
-        const { getData } = this.props;
-
-        getData().then((itemList) => {
-            this.setState({
-                itemList
-            });
+    useEffect(() => {
+        getData().then((data) => {
+            updateList(data);
         });
-    }
+    }, [getData]);
 
-    renderItems(arr) {
+    const renderItems = (arr) => {
         return arr.map((item) => {
             const { id } = item;
-            const label = this.props.renderItem(item);
+            const label = renderItem(item);
             return (
                 <li
                     key={id}
                     className='list-group-item'
-                    onClick={() => this.props.onItemSelected(id)}
+                    onClick={() => onItemSelected(id)}
                 >
                     {label}
                 </li>
             );
         });
+    };
+
+    if (!itemList) {
+        return <Preloader />;
     }
 
-    render() {
-        const { itemList } = this.state;
+    const items = renderItems(itemList);
 
-        if (!itemList) {
-            return <Preloader />;
-        }
+    return <ul className='item-list list-group'>{items}</ul>;
+};
 
-        const items = this.renderItems(itemList);
-
-        return <ul className='item-list list-group'>{items}</ul>;
-    }
-}
+export default ItemList;
