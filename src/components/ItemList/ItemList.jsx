@@ -6,9 +6,16 @@ const ItemList = ({ getData, onItemSelected, renderItem }) => {
     const [itemList, updateList] = useState([]);
 
     useEffect(() => {
+        let mounted = true;
         getData().then((data) => {
-            updateList(data);
+            if (mounted) {
+                updateList(data);
+            }
         });
+
+        return function cleanup() {
+            mounted = false;
+        };
     }, [getData]);
 
     const renderItems = (arr) => {
